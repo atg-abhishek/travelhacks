@@ -8,4 +8,4 @@ def landing():
 	return "Welcome to the Travel hackathon team"
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=8888, debug=True)
+	app.run(host='0.0.0.0', port=23001, debug=True)
