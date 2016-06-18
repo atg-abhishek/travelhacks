@@ -1,6 +1,7 @@
 backend/keys.json
 .idea
 instaurant.pem
+backend/TravelHacks.txt
 
 # Front end stuff
 # Don't check auto-generated stuff into git
