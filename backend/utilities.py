@@ -4,6 +4,7 @@ from pprint import pprint
 import requests
 import operator
 import sys
+from weather import *
 
 def key_fetcher(name):
         with open('keys.json') as infile:
