@@ -5,6 +5,7 @@ import requests
 import operator
 import sys
 from weather import *
+import re
 
 def key_fetcher(name):
         with open('keys.json') as infile:
@@ -43,19 +44,38 @@ def get_yelp_search_parameters(lat,longi, mealType):
 
     return params
 
-def get_list_of_activities(city, categories):  #TODO: provide default categories so when categories param not give, all activities are returned
+def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: provide default categories so when categories param is not given, all activities are returned
     expedia_consumer_key = key_fetcher('expedia_consumer_key')
     url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
-    try:
-        r = requests.post(url)
-        activities = r.json()['activities']
+    # try:
+    r = requests.post(url)
+    activities = r.json()['activities']
 
-        filtered_by_categories = [x for x in activities if any(cat in x['categories'] for cat in categories)]
+    def has_one_of_categories(activity, categories):
+        return any(cat in activity['categories'] for cat in categories)
 
-        return filtered_by_categories
-    except:
-        return "null"
+    def is_within_duration_bounds(activity, min_hours, max_hours):
+        duration_json = activity['duration']
+        if not duration_json:
+            return False
+
+        duration_match = re.match("(.)h", activity['duration'])
+        if not duration_match:
+            return False
+
+        duration_str = duration_match.group(1)
+        if not duration_str:
+            return False
+        else:
+            return min_hours <= int(duration_str) <= max_hours
+
+    filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
+    filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
+
+    return filtered_by_duration
+    # except:
+    #     return "null"
 
 def get_keywords(sentence=""):
     api_key = key_fetcher('indico_api_key')
