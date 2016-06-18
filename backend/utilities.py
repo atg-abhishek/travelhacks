@@ -43,14 +43,17 @@ def get_yelp_search_parameters(lat,longi, mealType):
 
     return params
 
-def get_list_of_activities(city):
+def get_list_of_activities(city, categories):  #TODO: provide default categories so when categories param not give, all activities are returned
     expedia_consumer_key = key_fetcher('expedia_consumer_key')
     url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
     try:
         r = requests.post(url)
-        val = r.json()
-        return val
+        activities = r.json()['activities']
+
+        filtered_by_categories = [x for x in activities if any(cat in x['categories'] for cat in categories)]
+
+        return filtered_by_categories
     except:
         return "null"
 
@@ -105,7 +108,7 @@ def google_places(lat, lng, radius, types,name):
     res = r.json()
     pprint(res)
 
-pprint(get_list_of_activities("newyork"))
+pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
