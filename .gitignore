@@ -4,7 +4,6 @@ backend/keys.json
 # Front end stuff
 # Don't check auto-generated stuff into git
 
->>>>>>> First commit of frent end code
 coverage
 build
 node_modules
