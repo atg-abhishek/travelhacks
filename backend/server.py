@@ -7,9 +7,9 @@ app = Flask(__name__)
 def landing():
 	return "Welcome to the Travel hackathon team"
 
-@app.route('/hello')
-def hello():
-	return "Hello Clemence"
+@app.route('/hello/<name>')
+def hello(name):
+	return "Hello %s", name
 
 
 if __name__ == '__main__':
