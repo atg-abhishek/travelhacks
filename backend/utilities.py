@@ -125,7 +125,7 @@ def get_emotions(sentence=""):
     except:
         return "null"
 
-def google_places(lat, lng, radius, types,name):
+def google_places(lat=45.5268224, lng=-73.5799845, radius, types,name):
     api_key = key_fetcher('google_places_api_key')
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+str(lat)+','+str(lng)
     payload = {'radius' : radius, 'types' : types, 'name' : name, 'key' : api_key}
@@ -140,9 +140,18 @@ def get_unique_items_for_list(li):
     myset = set(li)
     return list(myset)
 
-pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
+def get_expedia_compliant_categories_from_moods_list():
+    temp = {}
+    with open('./datafiles/moods_list.json') as infile:
+        temp = json.load(infile)
+    moods = temp['data']
+    temp1 = {}
+    with open('./datafiles/unique_categories_master_list.json') as infile:
+        temp1 = json.load(infile)
+    expedia_categories = temp1['data']
+    
 
-
+# pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
