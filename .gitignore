@@ -1,5 +1,6 @@
 backend/keys.json
 .idea
+instaurant.pem
 
 # Front end stuff
 # Don't check auto-generated stuff into git
