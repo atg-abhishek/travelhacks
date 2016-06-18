@@ -11,7 +11,6 @@ def landing():
 
 @app.route('/getCityInfo', methods=['POST'])
 def cityInfo():
-	cityName = request.form['cityName']
 	lat = request.form['lat']
 	lng = request.form['lng']
 
