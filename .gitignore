@@ -12,3 +12,4 @@ stats.json
 # Cruft
 .DS_Store
 npm-debug.log
+internals/scripts/setup.js

@@ -24,6 +24,9 @@ import { changeUsername } from './actions';
 import { loadRepos } from '../App/actions';
 
 import RepoListItem from 'containers/RepoListItem';
+import CitySuggest from 'containers/CitySuggest';
+import SimpleMap from 'containers/SimpleMap';
+
 import Button from 'components/Button';
 import H2 from 'components/H2';
 import List from 'components/List';
@@ -80,9 +83,12 @@ export class HomePage extends React.Component {
       <article>
         <div>
           <section className={`${styles.textSection} ${styles.centered}`}>
-            <H2>Start your next react project in seconds</H2>
-            <p>A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices</p>
+            <H2>travel hacks</H2>
           </section>
+          <CitySuggest />
+          <div style={{ height: '400px' }} >
+            <SimpleMap />
+          </div>
           <section className={styles.textSection}>
             <H2>Try me!</H2>
             <form className={styles.usernameForm} onSubmit={this.props.onSubmitForm}>
