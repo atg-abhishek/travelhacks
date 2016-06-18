@@ -128,7 +128,14 @@ def google_places(lat, lng, radius, types,name):
     res = r.json()
     pprint(res)
 
-pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
+def get_unique_items_for_list(li):
+    # takes in a list and returns a list with unique items
+    myset = set(li)
+    return list(myset)
+
+# pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
+
+
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
