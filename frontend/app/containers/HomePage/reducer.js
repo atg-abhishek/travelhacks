@@ -12,12 +12,14 @@
 
 import {
   CHANGE_USERNAME,
+  CHANGE_CITY,
 } from './constants';
 import { fromJS } from 'immutable';
 
 // The initial state of the App
 const initialState = fromJS({
   username: '',
+  city: '',
 });
 
 function homeReducer(state = initialState, action) {
@@ -27,6 +29,10 @@ function homeReducer(state = initialState, action) {
       // Delete prefixed '@' from the github username
       return state
         .set('username', action.name.replace(/@/gi, ''));
+    case CHANGE_CITY:
+      return state
+        .set('city', action.city);
+
     default:
       return state;
   }

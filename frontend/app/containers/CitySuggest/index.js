@@ -11,9 +11,13 @@ import { createSelector } from 'reselect';
 import Geosuggest from 'react-geosuggest';
 import { selectCurrentUser } from 'containers/App/selectors';
 
-// import styles from './styles.css';
+import styles from './styles.css';
 
 export class RepoListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  onSuggestSelect = (suggest) => {
+    this.props.onChangeCity(suggest.label);
+  }
+
   render() {
     // const item = this.props.item;
     // let nameprefix = '';
@@ -28,9 +32,9 @@ export class RepoListItem extends React.Component { // eslint-disable-line react
     const content = (
       <div className>
         <Geosuggest
-          placeholder="Start typing!"
-          initialValue="Hamburg"
-          // fixtures={fixtures}
+          className={styles.geosuggest}
+          placeholder="Type a city"
+          initialValue="Montreal"
           onSuggestSelect={this.onSuggestSelect}
           location={new google.maps.LatLng(53.558572, 9.9278215)}  // eslint-disable-line
           radius="20"
@@ -47,8 +51,12 @@ export class RepoListItem extends React.Component { // eslint-disable-line react
   }
 }
 
+
 RepoListItem.propTypes = {
   // item: React.PropTypes.object,
+  onChangeCity: React.PropTypes.func,
+  cityName: React.PropTypes.string,
+
   // currentUser: React.PropTypes.string,
 };
 

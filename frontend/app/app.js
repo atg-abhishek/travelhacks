@@ -28,12 +28,21 @@ import configureStore from './store';
 import styles from 'containers/App/styles.css';
 const openSansObserver = new FontFaceObserver('Open Sans', {});
 
+const robotoObserver = new FontFaceObserver('Roboto', {});
+
 // When Open Sans is loaded, add a font-family using Open Sans to the body
 openSansObserver.check().then(() => {
   document.body.classList.add(styles.fontLoaded);
 }, () => {
   document.body.classList.remove(styles.fontLoaded);
 });
+
+robotoObserver.check().then(() => {
+  document.body.classList.add(styles.fontLoaded);
+}, () => {
+  document.body.classList.remove(styles.fontLoaded);
+});
+
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

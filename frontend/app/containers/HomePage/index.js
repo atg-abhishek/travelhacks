@@ -7,6 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import CityPic from './city_1.jpg';
 
 import { createStructuredSelector } from 'reselect';
 
@@ -18,9 +19,10 @@ import {
 
 import {
   selectUsername,
+  selectCity,
 } from './selectors';
 
-import { changeUsername } from './actions';
+import { changeUsername, changeCity } from './actions';
 import { loadRepos } from '../App/actions';
 
 import RepoListItem from 'containers/RepoListItem';
@@ -28,7 +30,7 @@ import CitySuggest from 'containers/CitySuggest';
 import SimpleMap from 'containers/SimpleMap';
 
 import Button from 'components/Button';
-import H2 from 'components/H2';
+import H1 from 'components/H1';
 import List from 'components/List';
 import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -80,34 +82,22 @@ export class HomePage extends React.Component {
     }
 
     return (
-      <article>
-        <div>
-          <section className={`${styles.textSection} ${styles.centered}`}>
-            <H2>travel hacks</H2>
-          </section>
-          <CitySuggest />
-          <div style={{ height: '400px' }} >
-            <SimpleMap />
-          </div>
-          <section className={styles.textSection}>
-            <H2>Try me!</H2>
-            <form className={styles.usernameForm} onSubmit={this.props.onSubmitForm}>
-              <label htmlFor="username">Show Github repositories by
-                <span className={styles.atPrefix}>@</span>
-                <input
-                  id="username"
-                  className={styles.input}
-                  type="text"
-                  placeholder="mxstbr"
-                  value={this.props.username}
-                  onChange={this.props.onChangeUsername}
-                />
-              </label>
-            </form>
-            {mainContent}
-          </section>
-          <Button handleRoute={this.openFeaturesPage}>Features</Button>
-        </div>
+      <article
+        className={styles.mainBackground}
+        style={{
+          backgroundImage:
+          `linear-gradient(
+          rgba(0, 0, 0, 0.35),
+          rgba(0, 0, 0, 0.35)), url(${CityPic})`,
+        }}
+      >
+        <section className={styles.textSection}>
+          <form className={styles.usernameForm} onSubmit={(evt) => { this.props.onSubmitForm(evt, this.props.city); } }>
+            <H1>Where do you want to go?</H1>
+            <CitySuggest onChangeCity={this.props.onChangeCity} />
+            <button className={styles.submitButton} type="submit">Go</button>
+          </form>
+        </section>
       </article>
     );
   }
@@ -126,18 +116,22 @@ HomePage.propTypes = {
   ]),
   onSubmitForm: React.PropTypes.func,
   username: React.PropTypes.string,
+  city: React.PropTypes.string,
   onChangeUsername: React.PropTypes.func,
+  onChangeCity: React.PropTypes.func,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    onChangeCity: (city) => dispatch(changeCity(city)),
     changeRoute: (url) => dispatch(push(url)),
-    onSubmitForm: (evt) => {
+    onSubmitForm: (evt, city) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      dispatch(loadRepos());
+      if (city && city !== '') {
+        dispatch(loadRepos());
+      }
     },
-
     dispatch,
   };
 }
@@ -145,6 +139,7 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = createStructuredSelector({
   repos: selectRepos(),
   username: selectUsername(),
+  city: selectCity(),
   loading: selectLoading(),
   error: selectError(),
 });

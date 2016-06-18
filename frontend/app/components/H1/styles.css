@@ -1,4 +1,6 @@
 .heading1 {
-  font-size: 2em;
-  margin-bottom: 0.25em;
+  font-size: 3em;
+  line-height: 1.1em;
+  font-family: 'Roboto', sans-serif;
+  /*margin-bottom: 0.25em;*/
 }
