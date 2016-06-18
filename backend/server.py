@@ -7,7 +7,7 @@ app = Flask(__name__)
 def landing():
 	return "Welcome to the Travel hackathon team"
 
-@app.route('/getCityInfo')
+@app.route('/getCityInfo', methods=['POST'])
 def cityInfo():
 	cityName = request.form['cityName']
 	lat = request.form['lat']
