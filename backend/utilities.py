@@ -3,6 +3,7 @@ import rauth
 from pprint import pprint
 import requests
 import operator
+import sys
 
 def key_fetcher(name):
         with open('keys.json') as infile:
@@ -41,6 +42,16 @@ def get_yelp_search_parameters(lat,longi, mealType):
 
     return params
 
+def get_list_of_activities(city):
+    expedia_consumer_key = key_fetcher('expedia_consumer_key')
+    url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
+
+    try:
+        r = requests.post(url)
+        val = r.json()
+        return val
+    except:
+        return "null"
 
 def get_keywords(sentence=""):
     api_key = key_fetcher('indico_api_key')
@@ -92,6 +103,8 @@ def google_places(lat, lng, radius, types,name):
     pprint(r.url)
     res = r.json()
     pprint(res)
+
+pprint(get_list_of_activities("newyork"))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
