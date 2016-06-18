@@ -48,34 +48,41 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
     expedia_consumer_key = key_fetcher('expedia_consumer_key')
     url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
-    # try:
-    r = requests.post(url)
-    activities = r.json()['activities']
+    try:
+        r = requests.post(url)
+        activities = r.json()['activities']
 
-    def has_one_of_categories(activity, categories):
-        return any(cat in activity['categories'] for cat in categories)
+        def has_one_of_categories(activity, categories):
+            return any(cat in activity['categories'] for cat in categories)
 
-    def is_within_duration_bounds(activity, min_hours, max_hours):
-        duration_json = activity['duration']
-        if not duration_json:
-            return False
+        def is_within_duration_bounds(activity, min_hours, max_hours):
+            duration_json = activity['duration']
+            if not duration_json:
+                return False
 
-        duration_match = re.match("(.)h", activity['duration'])
-        if not duration_match:
-            return False
+            duration_match = re.match("(.)h", activity['duration'])
+            if not duration_match:
+                return False
 
-        duration_str = duration_match.group(1)
-        if not duration_str:
-            return False
-        else:
-            return min_hours <= int(duration_str) <= max_hours
+            duration_str = duration_match.group(1)
+            if not duration_str:
+                return False
+            else:
+                return min_hours <= int(duration_str) <= max_hours
 
-    filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
-    filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
+        filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
+        filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
+        removed_unused_fields = [{'act_id': int(act['id']),
+                                  'name': act['title'],
+                                  'image': act['largeImageURL'],
+                                  'latlng': [float(coord) for coord in act['latLng'].split(',')],
+                                  'price': act['fromPrice'],
+                                  'type': "activity"
+                                  } for act in filtered_by_duration]
 
-    return filtered_by_duration
-    # except:
-    #     return "null"
+        return removed_unused_fields
+    except:
+        return "null"
 
 def get_keywords(sentence=""):
     api_key = key_fetcher('indico_api_key')
@@ -133,7 +140,7 @@ def get_unique_items_for_list(li):
     myset = set(li)
     return list(myset)
 
-# pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
+pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
 
 
 
