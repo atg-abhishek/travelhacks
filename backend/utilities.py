@@ -3,6 +3,7 @@ import rauth
 from pprint import pprint
 import requests
 import operator
+from weather import *
 
 def key_fetcher(name):
         with open('keys.json') as infile:
@@ -93,6 +94,7 @@ def google_places(lat, lng, radius, types,name):
     res = r.json()
     pprint(res)
 
+# pprint(get_weather())
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
 # pprint(x)
