@@ -1,7 +1,7 @@
 from flask import Flask, request
 from utilities import *
 from flask.ext.cors import CORS, cross_origin
-
+from pprint import pprint
 app = Flask(__name__)
 CORS(app)
 
@@ -11,6 +11,7 @@ def landing():
 
 @app.route('/getCityInfo', methods=['POST'])
 def cityInfo():
+	pprint(request.values)
 	lat = request.form['lat']
 	lng = request.form['lng']
 
