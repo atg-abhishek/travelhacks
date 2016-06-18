@@ -125,7 +125,7 @@ def get_emotions(sentence=""):
     except:
         return "null"
 
-def google_places(lat=45.5268224, lng=-73.5799845, radius, types,name):
+def google_places(radius, types,name, lat=45.5268224, lng=-73.5799845):
     api_key = key_fetcher('google_places_api_key')
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+str(lat)+','+str(lng)
     payload = {'radius' : radius, 'types' : types, 'name' : name, 'key' : api_key}
