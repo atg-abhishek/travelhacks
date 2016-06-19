@@ -290,9 +290,19 @@ def generate_itinerary(city, moods):
             return 'null'
         morning_activity, afternoon_activity, nightlife = random.sample(mood_arrs[moods[0]], 3)
     elif len(moods) >= 2:
-        morning_activity = random.choice(mood_arrs[moods[0]])
-        afternoon_activity = random.choice(mood_arrs[moods[1]])
-        nightlife = random.choice(mood_arrs[moods[1]])
+        mood_0_acts = mood_arrs[moods[0]]
+        if not mood_0_acts:
+            morning_activity = random.choice(activities)
+        else:
+            morning_activity = random.choice(mood_0_acts)
+
+        mood_1_acts = mood_arrs[moods[1]]
+        if not mood_1_acts:
+            afternoon_activity = random.choice(activities)
+            nightlife = random.choice(activities)
+        else:
+            afternoon_activity = random.choice(mood_1_acts)
+            nightlife = random.choice(mood_1_acts)
 
     breakfast_restaurant = random.choice(get_list_of_restaurants(morning_activity['latlng'][0], morning_activity['latlng'][1], 'breakfast'))
     lunch_restaurant = random.choice(get_list_of_restaurants(afternoon_activity['latlng'][0], afternoon_activity['latlng'][1], 'lunch'))
