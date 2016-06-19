@@ -259,13 +259,32 @@ def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
 
 # pprint(get_city_from_lat_lng())
 def generate_itinerary(city, moods):
-    activities = get_list_of_activities(city, ["", ""])
-    if len(activities) < 3:
-        return "null"
+    # activities = get_list_of_activities(city, ["", ""])
+    # if len(activities) < 3:
+    #     return "null"
 
     # day_activities = <NO NIGHTLIFE NO MEALS>
     # night_activities = <NIGHTLIFE NO MEALS>
-    morning_activity, afternoon_activity, nightlife = random.sample(activities, 3)
+    temp = {}
+    with open('./datafiles/' + city + '_moods.json') as infile:
+        temp = json.load(infile)
+    mood_arrs = temp['data']
+
+    morning_activity = {}
+    afternoon_activity = {}
+    nightlife = {}
+
+    if len(moods) == 0:
+        return 'null'
+    elif len(moods) == 1:
+        if len(mood_arrs[moods[0]]) < 2:
+            return 'null'
+        morning_activity, afternoon_activity, nightlife = random.sample(mood_arrs[moods[0]], 3)
+    elif len(moods) >= 2:
+        morning_activity = random.choice(mood_arrs[moods[0]])
+        afternoon_activity = random.choice(mood_arrs[moods[1]])
+        nightlife = random.choice(mood_arrs[moods[1]])
+
     breakfast_restaurant = random.choice(get_list_of_restaurants(morning_activity['latlng'][0], morning_activity['latlng'][1], 'breakfast'))
     lunch_restaurant = random.choice(get_list_of_restaurants(afternoon_activity['latlng'][0], afternoon_activity['latlng'][1], 'lunch'))
     dinner_restaurant = random.choice(get_list_of_restaurants(nightlife['latlng'][0], nightlife['latlng'][1], 'dinner'))
@@ -357,3 +376,4 @@ def mood_keywords_mapper(act, keywords):
 #     get_list_of_activities(t, categories=["placeholder1", "placeholder"])
 
 # generate_mood_indexed_files()
+# print(generate_itinerary('newyork', ['romantic', 'relaxed']))
