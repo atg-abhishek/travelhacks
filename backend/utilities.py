@@ -49,6 +49,13 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
     expedia_consumer_key = key_fetcher('expedia_consumer_key')
     url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
+    all_categories = ["Nightlife", "Air, Balloon & Helicopter Tours", "Cruises & Water Tours", "Attractions",
+                      "Hop-on Hop-off", "Water Activities", "Disney", "Adventures", "Show & Sport Tickets",
+                      "Tours & Sightseeing", "Spa", "Private Tours", "Theme Parks", "Sightseeing Passes",
+                      "Walking & Bike Tours"]
+
+    categories = all_categories  #TODO: REPLACE WITH CUSTOM CATEGORIES FROM MOOD
+
     try:
         r = requests.post(url)
         activities = r.json()['activities']
@@ -234,5 +241,4 @@ def generate_itinerary(city, categories):
 # pprint(y)
 
 # pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
-all_categories = ["Nightlife", "Air, Balloon & Helicopter Tours", "Cruises & Water Tours", "Attractions", "Hop-on Hop-off", "Water Activities", "Disney", "Adventures", "Show & Sport Tickets", "Tours & Sightseeing", "Spa", "Private Tours", "Theme Parks", "Sightseeing Passes", "Walking & Bike Tours"]
 # pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
