@@ -280,6 +280,8 @@ def generate_itinerary(city, moods):
     nightlife = {}
 
     moods = moods.split(',')
+    pprint("The moods are " )
+    pprint(moods)
 
     if len(moods) == 0:
         return 'null'
