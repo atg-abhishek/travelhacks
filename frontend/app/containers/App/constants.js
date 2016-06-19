@@ -12,3 +12,7 @@
 export const LOAD_CITY_DATA = 'boilerplate/App/LOAD_CITY_DATA';
 export const LOAD_CITY_DATA_SUCCESS = 'boilerplate/App/LOAD_CITY_DATA_SUCCESS';
 export const LOAD_CITY_DATA_ERROR = 'boilerplate/App/LOAD_CITY_DATA_ERROR';
+
+export const LOAD_MOOD_DATA = 'boilerplate/App/SUBMIT_MOOD_DATA';
+export const LOAD_MOOD_DATA_ERROR = 'boilerplate/App/SUBMIT_MOOD_DATA_ERROR';
+export const LOAD_MOOD_DATA_SUCCESS = 'boilerplate/App/SUBMIT_MOOD_DATA_SUCCESS';

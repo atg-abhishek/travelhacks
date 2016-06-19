@@ -15,14 +15,13 @@ import { selectCity } from 'containers/HomePage/selectors';
  */
 export function* getCityInfo() {
   // Select username from store
-  const cityData = yield select(selectCity());
+  const city = yield select(selectCity());
 
   const requestURL = 'http://ec2-52-87-240-146.compute-1.amazonaws.com:23001/getCityInfo';
 
   const formData = new FormData();
-
-  formData.append('lat', cityData.location.lat);
-  formData.append('lng', cityData.location.lng);
+  formData.append('lat', city.location.lat);
+  formData.append('lng', city.location.lng);
 
   // Call our request helper (see 'utils/request')
   const repos = yield call(request, requestURL,
@@ -42,7 +41,7 @@ export function* getCityInfo() {
 /**
  * Watches for LOAD_REPOS action and calls handler
  */
-export function* getReposWatcher() {
+export function* getCityDataWatcher() {
   while (yield take(LOAD_CITY_DATA)) {
     yield call(getCityInfo);
   }
@@ -53,7 +52,7 @@ export function* getReposWatcher() {
  */
 export function* cityData() {
   // Fork watcher so we can continue execution
-  const watcher = yield fork(getReposWatcher);
+  const watcher = yield fork(getCityDataWatcher);
 
   // Suspend execution until location changes
   yield take(LOCATION_CHANGE);

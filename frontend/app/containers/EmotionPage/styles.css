@@ -1,0 +1,20 @@
+.emotionPage {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding-right: .5em;
+  padding-left: .5em;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: bolder;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.1em;
+  color: white;
+  text-align: right;
+  margin-left: 30%;
+  padding-top: .5em;
+  margin-bottom: .5em;
+}

@@ -1,0 +1,21 @@
+.buttonWrapper {
+  display: inline-block;
+  width: 50%;
+  margin-bottom: 1em;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.emotionButton {
+  /*padding: 1em 1.25em;*/
+  width: 100%;
+  text-align: center;
+  height: 100%;
+  padding: 1em 1.25em;
+  display: block;
+  background: rgba(255,255,255, 0.3);
+  border-radius: 5px;
+}
+
+.selected {
+  background: rgba(255,255,255, 0.7);
+}

@@ -46,6 +46,7 @@ export class HomePage extends React.Component {
     if (this.props.username && this.props.username.trim().length > 0) {
       this.props.onSubmitForm();
     }
+    console.log('here?');
   }
   /**
    * Changes the route
@@ -133,8 +134,13 @@ function mapDispatchToProps(dispatch) {
     changeRoute: (url) => dispatch(push(url)),
     onSubmitForm: (evt, city) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
-      if (city && city !== '') {
+      if (city && city.label) {
         dispatch(loadCityData());
+        // todo fix this
+        setTimeout(() => {
+          console.log('timeout expired');
+          dispatch(push('emotions'));
+        }, 1200);
       }
     },
     dispatch,

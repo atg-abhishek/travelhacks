@@ -47,7 +47,28 @@ export default function createRoutes(store) {
           .catch(errorLoading);
       },
     }, {
+      path: 'emotions',
+      name: 'emotionPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          System.import('containers/EmotionPage/reducer'),
+          System.import('containers/EmotionPage/sagas'),
+          System.import('containers/EmotionPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('emotionPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
+
       name: 'notfound',
       getComponent(nextState, cb) {
         System.import('containers/NotFoundPage')

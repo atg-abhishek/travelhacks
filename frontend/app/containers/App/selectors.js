@@ -11,6 +11,12 @@ const selectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+
+const selectCityData = () => createSelector(
+  selectGlobal(),
+  (globalState) => globalState.get('cityData').toJS()
+);
+
 const selectLoading = () => createSelector(
   selectGlobal(),
   (globalState) => globalState.get('loading')
@@ -45,6 +51,7 @@ const selectLocationState = () => {
 export {
   selectGlobal,
   selectCurrentUser,
+  selectCityData,
   selectLoading,
   selectError,
   selectRepos,
