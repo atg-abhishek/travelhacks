@@ -12,7 +12,9 @@ def getCats(filename):
 	cats = []
 	for k in temp_cats:
 		cats.append(k)
-	return cats
+	# return cats
+	with open('./datafiles/'+filename+'_categories.json','w') as outfile:
+		json.dump({"data":cats}, outfile)
 
 def getActivities(city):
 	expedia_consumer_key = key_fetcher('expedia_consumer_key')
@@ -54,4 +56,6 @@ def generate_master_list():
 		json.dump(res, outfile)
 	return "success"
 
-generate_master_list()
+# temp = ['montreal', 'sanfrancisco', 'chicago', 'boston', 'tokyo', 'paris', 'delhi', 'beijing', 'berlin', 'london', 'losangeles', 'bangkok', 'taipei','saopaolo', 'buenosaires','capetown']
+# for t in temp:
+# 	getCats(t)
