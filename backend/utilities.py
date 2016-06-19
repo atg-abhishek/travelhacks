@@ -103,7 +103,7 @@ def get_list_of_restaurants(lat, lng, meal_type):
                               'url': restaurant['mobile_url'],
                               'rating_img_url': restaurant['rating_img_url'],
                               'price': 0,  #TODO: try to get it from yelp website
-                              'type': "activity"
+                              'type': "restaurant"
                               } for restaurant in restaurants if not restaurant['is_closed'] and float(restaurant['rating']) >= 4.0]
     return removed_unused_fields
 
