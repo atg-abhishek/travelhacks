@@ -327,7 +327,7 @@ def mood_keywords_mapper(act,keywords):
 
 # pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
 
-temp = ['montreal', 'sanfrancisco', 'chicago', 'boston', 'tokyo', 'paris', 'delhi', 'beijing', 'berlin', 'london', 'losangeles', 'bangkok', 'taipei','saopaolo', 'buenosaires','capetown']
-for t in temp:
-    pprint("Running for " + t)
-    get_list_of_activities(t, categories=["placeholder1", "placeholder"])
+# temp = ['montreal', 'sanfrancisco', 'chicago', 'boston', 'tokyo', 'paris', 'delhi', 'beijing', 'berlin', 'london', 'losangeles', 'bangkok', 'taipei','saopaolo', 'buenosaires','capetown']
+# for t in temp:
+#     pprint("Running for " + t)
+#     get_list_of_activities(t, categories=["placeholder1", "placeholder"])
