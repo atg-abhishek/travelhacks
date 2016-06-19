@@ -17,14 +17,13 @@ body.fontLoaded {
 :global(#app) {
   min-height: 100%;
   min-width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 .wrapper {
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
   min-height: 100%;
-  flex-direction: column;
+  height: 100%;
 }
 
 .logo {
@@ -40,8 +39,8 @@ body.fontLoaded {
   font-size: 18px;
   font-size: 1rem;
   position: relative;
-  width: 100%;
   color: white;
+  width: 100%;
   margin: 1em auto;
   text-align: left;
 }
@@ -64,7 +63,6 @@ body.fontLoaded {
   right: 0;
   max-height: 25em;
   padding: 0;
-  margin-top: -1px;
   background: rgba(0,0,0,0.5);
   border: 2px solid white;
   border-top-width: 0;

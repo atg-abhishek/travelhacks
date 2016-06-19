@@ -26,8 +26,8 @@ import configureStore from './store';
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
 import styles from 'containers/App/styles.css';
-const openSansObserver = new FontFaceObserver('Open Sans', {});
 
+const openSansObserver = new FontFaceObserver('Open Sans', {});
 const robotoObserver = new FontFaceObserver('Roboto', {});
 
 // When Open Sans is loaded, add a font-family using Open Sans to the body
@@ -42,7 +42,6 @@ robotoObserver.check().then(() => {
 }, () => {
   document.body.classList.remove(styles.fontLoaded);
 });
-
 
 // Create redux store with history
 // this uses the singleton browserHistory provided by react-router

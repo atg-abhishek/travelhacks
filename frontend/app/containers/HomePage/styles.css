@@ -3,27 +3,38 @@
   height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 766px;
-  min-height: 100vh;
 }
 
+.containerBox {
+}
+.citySuggest {
+  width: 80%;
+}
+
+.leftContainer {
+  width: 80%;
+  display: inline-block;
+}
 .submitButton {
-  padding: 1em 2em;
-  width: 250px;
+  width: 20%;
+  background-size: contain;
+  background-position-x: 100%;
+  background-repeat: no-repeat;
+  padding: 1em;
+  height: 20px;
+  display: inline-block;
   color: white;
   cursor: pointer;
-  margin-top: 400px;
-  background: transparent;
-  border-radius: 0;
-  border: 1px solid white;
 }
+
 .submitButton:hover {
-  background: white;
+  /*background: white;*/
   color: black;
 }
 .textSection {
   margin-top: 2em;
   margin: 3em auto;
+  margin-top: 0;
   text-align: center;
 }
 

@@ -23,7 +23,7 @@ import {
 } from './selectors';
 
 import { changeUsername, changeCity } from './actions';
-import { loadRepos } from '../App/actions';
+import { loadCityData } from '../App/actions';
 
 import RepoListItem from 'containers/RepoListItem';
 import CitySuggest from 'containers/CitySuggest';
@@ -32,6 +32,7 @@ import SimpleMap from 'containers/SimpleMap';
 import Button from 'components/Button';
 import H1 from 'components/H1';
 import List from 'components/List';
+import Arrow from './arrow-pointing-to-right.svg';
 import ListItem from 'components/ListItem';
 import LoadingIndicator from 'components/LoadingIndicator';
 
@@ -94,8 +95,12 @@ export class HomePage extends React.Component {
         <section className={styles.textSection}>
           <form className={styles.usernameForm} onSubmit={(evt) => { this.props.onSubmitForm(evt, this.props.city); } }>
             <H1>Where do you want to go?</H1>
-            <CitySuggest onChangeCity={this.props.onChangeCity} />
-            <button className={styles.submitButton} type="submit">Go</button>
+            <div className={styles.containerBox}>
+              <div className={styles.leftContainer}>
+                <CitySuggest className={styles.citySuggest} onChangeCity={this.props.onChangeCity} />
+              </div>
+              <button style={{backgroundImage: `url(${Arrow})`}} className={styles.submitButton} type="submit"></button>
+            </div>
           </form>
         </section>
       </article>
@@ -116,7 +121,7 @@ HomePage.propTypes = {
   ]),
   onSubmitForm: React.PropTypes.func,
   username: React.PropTypes.string,
-  city: React.PropTypes.string,
+  city: React.PropTypes.object,
   onChangeUsername: React.PropTypes.func,
   onChangeCity: React.PropTypes.func,
 };
@@ -129,7 +134,7 @@ function mapDispatchToProps(dispatch) {
     onSubmitForm: (evt, city) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       if (city && city !== '') {
-        dispatch(loadRepos());
+        dispatch(loadCityData());
       }
     },
     dispatch,

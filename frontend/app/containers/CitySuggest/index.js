@@ -15,7 +15,7 @@ import styles from './styles.css';
 
 export class RepoListItem extends React.Component { // eslint-disable-line react/prefer-stateless-function
   onSuggestSelect = (suggest) => {
-    this.props.onChangeCity(suggest.label);
+    this.props.onChangeCity(suggest);
   }
 
   render() {
