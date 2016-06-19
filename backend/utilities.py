@@ -59,14 +59,14 @@ def check_cached_city(city):
         return False
 
 def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: provide default categories so when categories param is not given, all activities are returned
-    if check_cached_city(city):
-        temp = {}
-        with open('./datafiles/'+city+'_activities.json') as infile:
-            temp = json.load(infile)
-        activities = temp['data']
-        return activities
+    # if check_cached_city(city):
+    #     temp = {}
+    #     with open('./datafiles/'+city+'_activities.json') as infile:
+    #         temp = json.load(infile)
+    #     activities = temp['data']
+    #     return activities
 
-    else:
+    
         expedia_consumer_key = key_fetcher('expedia_consumer_key')
         url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
@@ -192,15 +192,17 @@ def get_emotions(sentence=""):
     except:
         return "null"
 
-def google_places(radius, types,name, lat=45.5268224, lng=-73.5799845):
+def google_places(radius, lat=45.5268224, lng=-73.5799845):
     api_key = key_fetcher('google_places_api_key')
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+str(lat)+','+str(lng)
-    payload = {'radius' : radius, 'types' : types, 'name' : name, 'key' : api_key}
+    payload = {'radius' : radius, 'key' : api_key}
     
     r = requests.get(url, params=payload)
-    pprint(r.url)
     res = r.json()
-    pprint(res)
+    return res
+
+def google_city_photos(lat,lng):
+    return "null"
 
 def get_unique_items_for_list(li):
     # takes in a list and returns a list with unique items
@@ -259,9 +261,12 @@ def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
 
 # pprint(get_city_from_lat_lng())
 def generate_itinerary(city, moods):
-    # activities = get_list_of_activities(city, ["", ""])
-    # if len(activities) < 3:
-    #     return "null"
+    
+    if not check_cached_city(city):
+        activities = get_list_of_activities(city, ["", ""])
+        if len(activities) < 3:
+            return "null"
+        generate_mood_indexed_files_for_city(city)
 
     # day_activities = <NO NIGHTLIFE NO MEALS>
     # night_activities = <NIGHTLIFE NO MEALS>
@@ -319,6 +324,26 @@ def generate_mood_indexed_files():
         with open('./datafiles/' + city + '_moods.json', 'w') as outfile:
             json.dump({"data": moods}, outfile)
 
+def generate_mood_indexed_files_for_city(city):
+    pprint("Generating mood file for " + city)
+    temp = {}
+    with open('./datafiles/' + city + '_activities.json') as infile:
+        temp = json.load(infile)
+    activities = temp['data']
+
+    moods = {"adventurous": [],
+             "relaxed": [],
+             "comical": [],
+             "nerdy": [],
+             "romantic": [],
+             "artsy": []}
+
+    for act in activities:
+        for mood in act['moods']:  # Assuming only relevant moods here
+            moods[mood['mood']].append(act)
+
+    with open('./datafiles/' + city + '_moods.json', 'w') as outfile:
+        json.dump({"data": moods}, outfile)
 
 def mood_keywords_mapper(act, keywords):
     moodlist = ["relaxed", "comical", "adventurous", "artsy", "romantic", "nerdy"]
@@ -376,4 +401,6 @@ def mood_keywords_mapper(act, keywords):
 #     get_list_of_activities(t, categories=["placeholder1", "placeholder"])
 
 # generate_mood_indexed_files()
-# print(generate_itinerary('newyork', ['romantic', 'relaxed']))
+# print(get_list_of_activities('vienna', ['romantic', 'relaxed']))
+
+# google_places(2000)
