@@ -13,13 +13,14 @@ def landing():
 def cityInfo():
 	lat = request.form['lat']
 	lng = request.form['lng']
-	temp = {"image" : "https://bonanzleimages.s3.amazonaws.com/afu/images/2037/1061/84/DM-0358.jpg", "weather" : "cloudy", "possible_moods" : ["relaxed", "playful", "comic"], "city": get_city_from_lat_lng(lat,lng)}
+	temp = {"image" : "https://bonanzleimages.s3.amazonaws.com/afu/images/2037/1061/84/DM-0358.jpg", "weather" : "cloudy", "city": get_city_from_lat_lng(lat,lng)}
 	return jsonify(temp)
 
 @app.route('/returnIter', methods=['POST'])
 def filters():
 	selected_moods = request.form['selected_moods']
 	city = request.form['city']
+	current_time = request.form['current_time']
 	x = generate_itinerary(city, selected_moods)
 	return jsonify(x)
 

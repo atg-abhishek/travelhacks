@@ -114,13 +114,15 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
             final_activities = []
             for act in activities:
                 if is_within_duration_bounds(act, min_hours, max_hours):
+                    keywords = create_keywords_field(act)
                     cleaned_activity = {'id': act['id'],
                                         'name': act['title'],
                                         'image': act['largeImageURL'],
                                         'latlng': [float(coord) for coord in act['latLng'].split(',')],
                                         'price': act['fromPrice'],
                                         'type': "activity",
-                                        'keywords': create_keywords_field(act)
+                                        'keywords': keywords,
+                                        'moods' : mood_keywords_mapper(act,keywords)
                                         }
                     final_activities.append(cleaned_activity)
 
@@ -222,6 +224,9 @@ def get_city_from_lat_lng(lat=45.5268224, lng=-73.5799845):
 
 def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
     # query type is used to select weather you want indoor outdoor or the actual weather description
+    city = get_city_from_lat_lng(lat,lng)
+    # with open('./datafiles/weather_cache.json') as infile:
+
     api_key = key_fetcher('weather_key')
     url1 = "http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lng)+"&APPID="+api_key
     r = requests.get(url1)
@@ -271,6 +276,42 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
+
+def mood_keywords_mapper(act,keywords):
+    moodlist = ["relaxed", "comical", "adventurous", "artsy", "romantic", "nerdy"]
+    mood_scores = []
+    for m in moodlist:
+        m_score = 0
+        for k in keywords:
+            url = "http://swoogle.umbc.edu/SimService/GetSimilarity?operation=api&phrase1="+k[0]+"_NN&phrase2="+m+"_JJ"
+            r = requests.get(url)
+            res = r.json()*k[1]
+            m_score+=res
+        if (m_score<0.0001):
+            continue
+        mood_scores.append({"mood" : m, "score" : m_score})
+    if len(mood_scores)==0:
+        return []
+    def extract_score(json):
+        return json['score']
+    mood_scores.sort(key=extract_score,reverse=True)
+    return mood_scores
+
+# pprint(mood_keywords_mapper({
+#         "name": "NYC TV & Movie Tour",
+#         "id": "183365",
+#         "price": "$43",
+#         "latlng": [40.764654, -73.9795217],
+#         "image": "//a.travel-assets.com/lxweb/media-vault/183365_l.jpeg?v=101827",
+#         "type": "activity",
+#         "keywords": [
+#             ["Tours", 0.6815710872],
+#             ["NYC", 0.270949264],
+#             ["Sightseeing", 0.270949264],
+#             ["Movie", 0.22532258060000002],
+#             ["TV", 0.22532258060000002]
+#         ]
+#     })) 
 # pprint(get_list_of_activities("newyork", categories=["placeholder1", "placeholder"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
@@ -285,3 +326,8 @@ def generate_itinerary(city, categories):
 # pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
 
 # pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
+
+temp = ['montreal', 'sanfrancisco', 'chicago', 'boston', 'tokyo', 'paris', 'delhi', 'beijing', 'berlin', 'london', 'losangeles', 'bangkok', 'taipei','saopaolo', 'buenosaires','capetown']
+for t in temp:
+    pprint("Running for " + t)
+    get_list_of_activities(t, categories=["placeholder1", "placeholder"])
