@@ -19,7 +19,13 @@ const selectMapResults = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const selectCurrentMarker = () => createSelector(
+  selectMapResultsDomain(),
+  (substate) => substate.get('selectedMarker')
+);
+
 export default selectMapResults;
 export {
   selectMapResultsDomain,
+  selectCurrentMarker,
 };

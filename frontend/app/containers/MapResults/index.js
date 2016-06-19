@@ -6,10 +6,11 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { selectMapResults } from './selectors';
+import { selectMapResults, selectCurrentMarker } from './selectors';
 
 import { selectMoodData } from '../App/selectors';
 import { selectCity } from '../HomePage/selectors';
+import { selectMarker } from './actions';
 
 import { createStructuredSelector } from 'reselect';
 import styles from './styles.css';
@@ -17,9 +18,86 @@ import SimpleMap from 'containers/SimpleMap';
 
 export class MapResults extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { moodData, city } = this.props;
+    const { moodData, city, marker } = this.props;
     let lat = 53;
     let lng = 42;
+
+    console.info('selected marker', marker);
+    const markers = [];
+
+    let bizInfo = (
+      <div>
+        <p className={styles.bigger}>No business information.</p>
+      </div>
+    );
+
+    let bizPhoto = (
+      <div>
+        No photo.
+      </div>
+    );
+
+    if (marker) {
+      bizInfo = (
+        <div>
+          <p className={styles.bigger}>
+            {marker.name}
+          </p>
+          <p>
+            {marker.price && marker.price !== 0 &&
+              marker.price
+            }
+          </p>
+          {marker.rating_img_url &&
+            <img src={marker.rating_img_url} />
+          }
+        </div>
+      );
+      const divStyle = {
+        backgroundImage: 'url(' + marker.image + ')',
+      };
+      bizPhoto = (
+        <div className={styles.bizPhoto}
+          style={divStyle}>
+        </div>
+      );
+    }
+    if (moodData.initialData) {
+      Object.keys(moodData.initialData).map((key) => {
+        return markers.push(
+          {
+            ...moodData.initialData[key],
+            showInfo: true,
+            position: {
+              lat: moodData.initialData[key].latlng[0],
+              lng: moodData.initialData[key].latlng[1],
+            },
+          }
+        );
+      });
+    } else {
+      markers.push(
+        {
+          image: 'https://s3-media1.fl.yelpcdn.com/bphoto/PkZIzw03M9qARWtGtinIaQ/ms.jpg',
+          id: 1,
+          position: {
+            lat: city.location.lat,
+            lng: city.location.lng,
+          },
+        });
+
+      markers.push(
+        {
+          image: '//a.travel-assets.com/lxweb/media-vault/405750_l.jpeg?v=101826',
+          id: 2,
+          position: {
+            lat: city.location.lat + 0.01,
+            lng: city.location.lng + 0.01,
+          },
+        });
+    }
+
+    console.log(markers);
 
     if (city.location) {
       lat = city.location.lat;
@@ -29,20 +107,14 @@ export class MapResults extends React.Component { // eslint-disable-line react/p
     return (
       <div className={styles.mapResults}>
         <div className={styles.mapContainer}>
-          <SimpleMap lat={lat} lng={lng} />
+          <SimpleMap lat={lat} lng={lng} onSelectMarker={this.props.onSelectMarker} markers={markers} />
         </div>
         <div className={styles.bottomContainer}>
           <div className={styles.left}>
-            Name of the activity / biz
+            {bizInfo}
           </div>
           <div className={styles.right}>
-            {this.props.moodData.initialData &&
-              (
-                <div>
-                  test
-                </div>
-              )
-            }
+              {bizPhoto}
           </div>
 
         </div>
@@ -54,17 +126,20 @@ export class MapResults extends React.Component { // eslint-disable-line react/p
 MapResults.propTypes = {
   moodData: React.PropTypes.object,
   city: React.PropTypes.object,
+  marker: React.PropTypes.object,
+  onSelectMarker: React.PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   // selectMapResults: selectMapResults(),
   moodData: selectMoodData(),
   city: selectCity(),
-
+  marker: selectCurrentMarker(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
+    onSelectMarker: (marker) => dispatch(selectMarker(marker)),
     dispatch,
   };
 }

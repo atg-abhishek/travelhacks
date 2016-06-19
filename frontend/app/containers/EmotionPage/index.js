@@ -27,6 +27,7 @@ export class EmotionPage extends React.Component { // eslint-disable-line react/
     //   // this.props.dispatch(push('emotions'));
     // }
   }
+
   render() {
     const emotions = this.props.emotions.emotions;
 

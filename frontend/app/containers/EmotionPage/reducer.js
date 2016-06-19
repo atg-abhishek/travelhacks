@@ -17,32 +17,32 @@ const initialState = fromJS({
   emotions: [
     {
       id: 1,
-      name: 'Relaxed',
+      name: 'relaxed',
       toggled: false,
     },
     {
       id: 2,
-      name: 'Adventerous',
+      name: 'adventurous',
       toggled: false,
     },
     {
       id: 3,
-      name: 'Comical',
+      name: 'comical',
       toggled: false,
     },
     {
       id: 4,
-      name: 'Artsy',
+      name: 'artsy',
       toggled: false,
     },
     {
       id: 5,
-      name: 'Romantic',
+      name: 'romantic',
       toggled: false,
     },
     {
       id: 6,
-      name: 'Nerdy',
+      name: 'nerdy',
       toggled: false,
     },
   ],

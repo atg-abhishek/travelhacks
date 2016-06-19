@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="33px" height="50px" viewBox="0 0 33 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.2.2 (9983) - http://www.bohemiancoding.com/sketch -->
+    <title>location-pin</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Travel-Hacks-11" sketch:type="MSArtboardGroup" transform="translate(-402.000000, -515.000000)" fill="#000000">
+            <path d="M418.495858,515 C409.399883,515 402,522.384933 402,531.462 C402,535.118267 404.339126,541.078667 409.151381,549.6844 C412.55519,555.771467 415.90302,560.8464 416.043437,561.059467 L418.495858,564.7688 L420.947611,561.059467 C421.088563,560.8464 424.436526,555.771467 427.839668,549.6844 C432.652057,541.078667 434.991182,535.118267 434.991182,531.462533 C434.991182,522.384933 427.5913,515 418.495858,515 L418.495858,515 Z M418.495858,539.8844 C413.773251,539.8844 409.945251,536.064133 409.945251,531.351067 C409.945251,526.638133 413.773251,522.817733 418.495858,522.817733 C423.217798,522.817733 427.046466,526.638133 427.046466,531.351067 C427.046466,536.064133 423.217798,539.8844 418.495858,539.8844 L418.495858,539.8844 Z" id="location-pin" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

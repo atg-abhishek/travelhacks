@@ -3,6 +3,14 @@
   width: 100%;
 }
 
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+p.bigger {
+  font-size: 17px;
+}
 .mapContainer {
   height: 1px;
   min-height: 80vh;
@@ -27,4 +35,10 @@
   float: left;
   height: 100%;
   display: block;
+}
+
+.bizPhoto {
+  height: 100%;
+  width: 100%;
+  background-size: cover;
 }

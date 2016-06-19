@@ -26,18 +26,20 @@ export function* getMoodData() {
     emotions = emotions.toJS();
   }
 
+  console.info('emotions', emotions);
+
   const requestURL = 'http://ec2-52-87-240-146.compute-1.amazonaws.com:23001/returnIter';
 
   const formData = new FormData();
   const emotionsWanted = [];
-  console.log('here in sagas');
+
   emotions.map((emotion) => {
     if (emotion.toggled) {
       return emotionsWanted.push(emotion.name);
     }
   });
 
-  console.log(emotionsWanted);
+  console.info('emotionsWanted', emotionsWanted);
 
   formData.append('city', cityData.initialData.city);
   formData.append('selected_moods', emotionsWanted);
