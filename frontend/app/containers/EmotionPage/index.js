@@ -11,6 +11,9 @@ import selectEmotions from './selectors';
 import { push } from 'react-router-redux';
 import { selectCityData } from '../App/selectors';
 
+import { selectLoading } from 'containers/App/selectors';
+
+
 import { loadMoodData } from '../App/actions';
 
 import { createStructuredSelector } from 'reselect';
@@ -30,6 +33,8 @@ export class EmotionPage extends React.Component { // eslint-disable-line react/
 
   render() {
     const emotions = this.props.emotions.emotions;
+
+    console.log(this.props.loading);
 
     const emotionBtns = emotions.map((emotion) => {
       let emotionBtn = (
@@ -56,7 +61,13 @@ export class EmotionPage extends React.Component { // eslint-disable-line react/
       >
         <h1>What are you in the mood for?</h1>
           {emotionBtns}
-        <Button onClick={(evt) => { this.props.onSubmitForm(evt, this.props.emotions); }}>Submit</Button>
+        <Button onClick={(evt) => {
+            if (!this.props.loading) {
+              this.props.onSubmitForm(evt, this.props.emotions);
+            } else {
+              console.log('loading so dont go');
+            }
+          }}>Submit</Button>
       </div>
     );
   }
@@ -72,6 +83,7 @@ const mapStateToProps = createStructuredSelector({
   selectEmotionPage: selectEmotionPage(),
   emotions: selectEmotions(),
   cityData: selectCityData(),
+  loading: selectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

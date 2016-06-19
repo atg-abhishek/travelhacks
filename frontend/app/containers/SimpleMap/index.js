@@ -47,11 +47,18 @@ export default class SimpleMapPage extends Component {
               onClick={this.props.onMapClick}
             >
               {this.props.markers.map((marker, index) => {
+                let letter = 'A';
+                if (marker.type === 'restaurant') {
+                  letter = 'R';
+                }
+
                 return (
                   <Marker
                     {...marker}
                     onClick={() => this.props.onSelectMarker(marker)}
                     key={index}
+                    title="test"
+                    icon={"http://maps.google.com/mapfiles/marker" + letter + ".png"}
                     onRightclick={() => this.props.onMarkerRightclick(index)} />
                 );
               })}

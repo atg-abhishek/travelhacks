@@ -45,7 +45,6 @@ export class HomePage extends React.Component {
     if (this.props.username && this.props.username.trim().length > 0) {
       this.props.onSubmitForm();
     }
-    console.log('here?');
   }
   /**
    * Changes the route

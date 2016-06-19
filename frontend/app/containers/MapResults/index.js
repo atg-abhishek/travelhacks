@@ -43,11 +43,11 @@ export class MapResults extends React.Component { // eslint-disable-line react/p
           <p className={styles.bigger}>
             {marker.name}
           </p>
-          <p>
-            {marker.price && marker.price !== 0 &&
-              marker.price
+            {marker.type !== 'restaurant' &&
+              <p>
+                {marker.price}
+              </p>
             }
-          </p>
           {marker.rating_img_url &&
             <img src={marker.rating_img_url} />
           }
@@ -75,29 +75,7 @@ export class MapResults extends React.Component { // eslint-disable-line react/p
           }
         );
       });
-    } else {
-      markers.push(
-        {
-          image: 'https://s3-media1.fl.yelpcdn.com/bphoto/PkZIzw03M9qARWtGtinIaQ/ms.jpg',
-          id: 1,
-          position: {
-            lat: city.location.lat,
-            lng: city.location.lng,
-          },
-        });
-
-      markers.push(
-        {
-          image: '//a.travel-assets.com/lxweb/media-vault/405750_l.jpeg?v=101826',
-          id: 2,
-          position: {
-            lat: city.location.lat + 0.01,
-            lng: city.location.lng + 0.01,
-          },
-        });
     }
-
-    console.log(markers);
 
     if (city.location) {
       lat = city.location.lat;

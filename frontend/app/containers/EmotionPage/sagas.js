@@ -9,7 +9,7 @@ import { moodDataLoaded, moodDataLoadingError } from 'containers/App/actions';
 
 import request from 'utils/request';
 import { selectCity } from 'containers/HomePage/selectors';
-import { selectCityData } from 'containers/App/selectors';
+import { selectCityData, selectLoading } from 'containers/App/selectors';
 import { selectEmotions } from 'containers/EmotionPage/selectors';
 
 /**
@@ -25,8 +25,6 @@ export function* getMoodData() {
   if (emotions) {
     emotions = emotions.toJS();
   }
-
-  console.info('emotions', emotions);
 
   const requestURL = 'http://ec2-52-87-240-146.compute-1.amazonaws.com:23001/returnIter';
 
