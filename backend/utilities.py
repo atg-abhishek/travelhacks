@@ -261,15 +261,19 @@ def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
 
 # pprint(get_city_from_lat_lng())
 def generate_itinerary(city, moods):
-    
+    activities = []
+
     if not check_cached_city(city):
         activities = get_list_of_activities(city, ["", ""])
         if len(activities) < 3:
             return "null"
         generate_mood_indexed_files_for_city(city)
+    else:
+        temp = {}
+        with open('./datafiles/'+city+'_activities.json') as infile:
+            temp = json.load(infile)
+        activities = temp['data']
 
-    # day_activities = <NO NIGHTLIFE NO MEALS>
-    # night_activities = <NIGHTLIFE NO MEALS>
     temp = {}
     with open('./datafiles/' + city + '_moods.json') as infile:
         temp = json.load(infile)
