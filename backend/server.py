@@ -16,7 +16,7 @@ def cityInfo():
 	temp = {"image" : "https://bonanzleimages.s3.amazonaws.com/afu/images/2037/1061/84/DM-0358.jpg", "weather" : "cloudy", "possible_moods" : ["relaxed", "playful", "comic"], "city": get_city_from_lat_lng(lat,lng)}
 	return jsonify(temp)
 
-
+# "weather" : get_indoor_outdoor_temp_weather(lat,lng,'weather')
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=23001, debug=True)

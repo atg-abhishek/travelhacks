@@ -171,8 +171,9 @@ def get_city_from_lat_lng(lat=45.5268224, lng=-73.5799845):
     r = requests.get(url)
     return r.json()['address']['city']
 
-def get_weather(lat=45.5268224, lng=-73.5799845):
-    api_key = key_fetcher['weather_key']
+def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
+    # query type is used to select weather you want indoor outdoor or the actual weather description
+    api_key = key_fetcher('weather_key')
     url1 = "http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lng)+"&APPID="+api_key
     r = requests.get(url1)
     print(r.text)
@@ -196,7 +197,11 @@ def get_weather(lat=45.5268224, lng=-73.5799845):
         wdecstr="inside"
     else:
         wdecstr="outside"
-    return {'temp' : temp, 'type_of_activities' : wdecstr}
+    if query_type=='activities':
+        return {'temp' : temp, 'type_of_activities' : wdecstr}
+    else:
+        return {'temp' : temp, 'weather' : supp_weather_info}
+
 
 # pprint(get_city_from_lat_lng())
 def generate_itinerary(city, categories):
