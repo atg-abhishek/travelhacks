@@ -243,7 +243,18 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
-
+def check_cached_city(city):
+    temp = {}
+    with open('./datafiles/cached_cities.json') as infile:
+        temp = json.load(infile)
+    cities = temp['data']
+    if city in cities:
+        return True
+    else:
+        cities.append(city)
+        with open('./datafiles/cached_cities.json','w') as outfile:
+            json.dump({"data" : cities})
+        return False
 # get_list_of_activities("newyork", categories=["Adventures", "Spa"])
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
