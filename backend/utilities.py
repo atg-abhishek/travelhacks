@@ -234,5 +234,5 @@ def generate_itinerary(city, categories):
 # pprint(y)
 
 # pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
-
-pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
+all_categories = ["Nightlife", "Air, Balloon & Helicopter Tours", "Cruises & Water Tours", "Attractions", "Hop-on Hop-off", "Water Activities", "Disney", "Adventures", "Show & Sport Tickets", "Tours & Sightseeing", "Spa", "Private Tours", "Theme Parks", "Sightseeing Passes", "Walking & Bike Tours"]
+# pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
