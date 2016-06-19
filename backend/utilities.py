@@ -6,6 +6,7 @@ import operator
 import sys
 from weather import *
 import re
+from geopy.geocoders import Nominatim
 
 def key_fetcher(name):
         with open('keys.json') as infile:
@@ -165,7 +166,12 @@ def get_expedia_compliant_categories_from_moods_list():
         temp1 = json.load(infile)
     expedia_categories = temp1['data']
     
+def get_city_from_lat_lng(lat=45.5268224, lng=-73.5799845):
+    url="http://nominatim.openstreetmap.org/reverse?format=json&lat="+str(lat)+"&lon="+str(lng)+"&zoom=18&addressdetails=1"
+    r = requests.get(url)
+    return r.json()['address']['city']
 
+# pprint(get_city_from_lat_lng())
 # pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
@@ -177,4 +183,4 @@ def get_expedia_compliant_categories_from_moods_list():
 # x = get_keywords("The National Aeronautics and Space Administration (NASA) is an independent agency of the executive branch of the United States Federal Government responsible for the civilian space program as well as aeronautics and aerospace research")
 # pprint(y)
 
-pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
+# pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
