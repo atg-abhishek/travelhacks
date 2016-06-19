@@ -80,15 +80,29 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
 
         filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
         filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
+
+        for act in filtered_by_duration:
+            title = act['title']
+            cats = act['categories']
+            text = ""
+            for c in cats:
+                text = text + " " + c
+            text = text + " " + title
+            act_kw = get_keywords(text)
+            act['keywords'] = act_kw
+
         removed_unused_fields = [{'id': act['id'],
                                   'name': act['title'],
                                   'image': act['largeImageURL'],
                                   'latlng': [float(coord) for coord in act['latLng'].split(',')],
                                   'price': act['fromPrice'],
-                                  'type': "activity"
+                                  'type': "activity",
+                                  'keywords' : act['keywords']
                                   } for act in filtered_by_duration]
 
-        return removed_unused_fields
+        with open('./datafiles/'+city+"_activities.json",'w') as outfile:
+            json.dump(removed_unused_fields,outfile)
+        return "success"
     except:
         return "null"
 
@@ -229,7 +243,8 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
-# pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
+
+get_list_of_activities("newyork", categories=["Adventures", "Spa"])
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
