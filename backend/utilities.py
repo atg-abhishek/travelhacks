@@ -78,10 +78,7 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
             else:
                 return min_hours <= int(duration_str) <= max_hours
 
-        filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
-        filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
-
-        for act in filtered_by_duration:
+        def create_keywords_field(act):
             title = act['title']
             cats = act['categories']
             text = ""
@@ -89,19 +86,25 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
                 text = text + " " + c
             text = text + " " + title
             act_kw = get_keywords(text)
-            act['keywords'] = act_kw
+            return act_kw
 
-        removed_unused_fields = [{'id': act['id'],
-                                  'name': act['title'],
-                                  'image': act['largeImageURL'],
-                                  'latlng': [float(coord) for coord in act['latLng'].split(',')],
-                                  'price': act['fromPrice'],
-                                  'type': "activity",
-                                  'keywords' : act['keywords']
-                                  } for act in filtered_by_duration]
+        # filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)] TODO: GO DIRECTLY FROM MOOD TO ACTIVITY
 
-        with open('./datafiles/'+city+"_activities.json",'w') as outfile:
-            json.dump(removed_unused_fields,outfile)
+        final_activities = []
+        for act in activities:
+            if is_within_duration_bounds(act, min_hours, max_hours):
+                cleaned_activity = {'id': act['id'],
+                                    'name': act['title'],
+                                    'image': act['largeImageURL'],
+                                    'latlng': [float(coord) for coord in act['latLng'].split(',')],
+                                    'price': act['fromPrice'],
+                                    'type': "activity",
+                                    'keywords': create_keywords_field(act)
+                                    }
+                final_activities.append(cleaned_activity)
+
+        with open('./datafiles/'+city+"_activities_test.json", 'w') as outfile:
+            json.dump(final_activities, outfile)
         return "success"
     except:
         return "null"
@@ -245,6 +248,7 @@ def generate_itinerary(city, categories):
 
 
 get_list_of_activities("newyork", categories=["Adventures", "Spa"])
+print("ALL DONE")
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
