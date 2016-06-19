@@ -172,7 +172,7 @@ def get_city_from_lat_lng(lat=45.5268224, lng=-73.5799845):
 
 def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
     # query type is used to select weather you want indoor outdoor or the actual weather description
-    api_key = key_fetcher['weather_key']
+    api_key = key_fetcher('weather_key')
     url1 = "http://api.openweathermap.org/data/2.5/weather?lat="+str(lat)+"&lon="+str(lng)+"&APPID="+api_key
     r = requests.get(url1)
     print(r.text)
