@@ -45,69 +45,90 @@ def get_yelp_search_parameters(lat, longi, mealType):
 
     return params
 
+def check_cached_city(city):
+    temp = {}
+    with open('./datafiles/cached_cities.json') as infile:
+        temp = json.load(infile)
+    cities = temp['data']
+    if city in cities:
+        return True
+    else:
+        cities.append(city)
+        with open('./datafiles/cached_cities.json','w') as outfile:
+            json.dump({"data" : cities}, outfile)
+        return False
+
 def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: provide default categories so when categories param is not given, all activities are returned
-    expedia_consumer_key = key_fetcher('expedia_consumer_key')
-    url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
+    if check_cached_city(city):
+        temp = {}
+        with open('./datafiles/'+city+'_activities.json') as infile:
+            temp = json.load(infile)
+        activities = temp['data']
+        return activities
 
-    all_categories = ["Nightlife", "Air, Balloon & Helicopter Tours", "Cruises & Water Tours", "Attractions",
-                      "Hop-on Hop-off", "Water Activities", "Disney", "Adventures", "Show & Sport Tickets",
-                      "Tours & Sightseeing", "Spa", "Private Tours", "Theme Parks", "Sightseeing Passes",
-                      "Walking & Bike Tours"]
+    else:
+        expedia_consumer_key = key_fetcher('expedia_consumer_key')
+        url = "http://terminal2.expedia.com/x/activities/search?location={}&apikey={}".format(city, expedia_consumer_key)
 
-    categories = all_categories  #TODO: REPLACE WITH CUSTOM CATEGORIES FROM MOOD
+        all_categories = ["Nightlife", "Air, Balloon & Helicopter Tours", "Cruises & Water Tours", "Attractions",
+                          "Hop-on Hop-off", "Water Activities", "Disney", "Adventures", "Show & Sport Tickets",
+                          "Tours & Sightseeing", "Spa", "Private Tours", "Theme Parks", "Sightseeing Passes",
+                          "Walking & Bike Tours"]
 
-    try:
-        r = requests.post(url)
-        activities = r.json()['activities']
+        categories = all_categories  #TODO: REPLACE WITH CUSTOM CATEGORIES FROM MOOD
 
-        def has_one_of_categories(activity, categories):
-            return any(cat in activity['categories'] for cat in categories)
+        try:
+            r = requests.post(url)
+            activities = r.json()['activities']
 
-        def is_within_duration_bounds(activity, min_hours, max_hours):
-            duration_json = activity['duration']
-            if not duration_json:
-                return False
+            def has_one_of_categories(activity, categories):
+                return any(cat in activity['categories'] for cat in categories)
 
-            duration_match = re.match("(.)h", activity['duration'])
-            if not duration_match:
-                return False
+            def is_within_duration_bounds(activity, min_hours, max_hours):
+                duration_json = activity['duration']
+                if not duration_json:
+                    return False
 
-            duration_str = duration_match.group(1)
-            if not duration_str:
-                return False
-            else:
-                return min_hours <= int(duration_str) <= max_hours
+                duration_match = re.match("(.)h", activity['duration'])
+                if not duration_match:
+                    return False
 
-        def create_keywords_field(act):
-            title = act['title']
-            cats = act['categories']
-            text = ""
-            for c in cats:
-                text = text + " " + c
-            text = text + " " + title
-            act_kw = get_keywords(text)
-            return act_kw
+                duration_str = duration_match.group(1)
+                if not duration_str:
+                    return False
+                else:
+                    return min_hours <= int(duration_str) <= max_hours
 
-        # filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)] TODO: GO DIRECTLY FROM MOOD TO ACTIVITY
+            def create_keywords_field(act):
+                title = act['title']
+                cats = act['categories']
+                text = ""
+                for c in cats:
+                    text = text + " " + c
+                text = text + " " + title
+                act_kw = get_keywords(text)
+                return act_kw
 
-        final_activities = []
-        for act in activities:
-            if is_within_duration_bounds(act, min_hours, max_hours):
-                cleaned_activity = {'id': act['id'],
-                                    'name': act['title'],
-                                    'image': act['largeImageURL'],
-                                    'latlng': [float(coord) for coord in act['latLng'].split(',')],
-                                    'price': act['fromPrice'],
-                                    'type': "activity",
-                                    'keywords': create_keywords_field(act)
-                                    }
-                final_activities.append(cleaned_activity)
+            # filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)] TODO: GO DIRECTLY FROM MOOD TO ACTIVITY
 
-        with open('./datafiles/'+city+"_activities_test.json", 'w') as outfile:
-            json.dump(final_activities, outfile)
-        return "success"
-    except:
-        return "null"
+            final_activities = []
+            for act in activities:
+                if is_within_duration_bounds(act, min_hours, max_hours):
+                    cleaned_activity = {'id': act['id'],
+                                        'name': act['title'],
+                                        'image': act['largeImageURL'],
+                                        'latlng': [float(coord) for coord in act['latLng'].split(',')],
+                                        'price': act['fromPrice'],
+                                        'type': "activity",
+                                        'keywords': create_keywords_field(act)
+                                        }
+                    final_activities.append(cleaned_activity)
+
+            with open('./datafiles/'+city+"_activities.json", 'w') as outfile:
+                json.dump({"data":final_activities}, outfile)
+            return final_activities
+        except:
+            return "null"
 
 def get_list_of_restaurants(lat, lng, meal_type):
     x = get_yelp_search_parameters(lat, lng, meal_type)
@@ -246,22 +267,7 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
-get_list_of_activities("newyork", categories=["Adventures", "Spa"])
-print("ALL DONE")
-
-def check_cached_city(city):
-    temp = {}
-    with open('./datafiles/cached_cities.json') as infile:
-        temp = json.load(infile)
-    cities = temp['data']
-    if city in cities:
-        return True
-    else:
-        cities.append(city)
-        with open('./datafiles/cached_cities.json','w') as outfile:
-            json.dump({"data" : cities})
-        return False
-# get_list_of_activities("newyork", categories=["Adventures", "Spa"])
+pprint(get_list_of_activities("newyork", categories=["placeholder1", "placeholder"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
