@@ -131,8 +131,12 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
             return "null"
 
 def get_list_of_restaurants(lat, lng, meal_type):
-    x = get_yelp_search_parameters(lat, lng, meal_type)
-    restaurants = get_yelp_results(x)['businesses']
+    params = get_yelp_search_parameters(lat, lng, meal_type)
+    restaurants = get_yelp_results(params)['businesses']
+    while not restaurants:
+        params["radius_filter"] = 2*params["radius_filter"]
+        restaurants = get_yelp_results(params)['businesses']
+
     removed_unused_fields = [{'id': restaurant['id'],
                               'name': restaurant['name'],
                               'image': restaurant['image_url'],
@@ -142,7 +146,7 @@ def get_list_of_restaurants(lat, lng, meal_type):
                               'rating_img_url': restaurant['rating_img_url'],
                               'price': 0,  #TODO: try to get it from yelp website
                               'type': "restaurant"
-                              } for restaurant in restaurants if not restaurant['is_closed'] and float(restaurant['rating']) >= 4.0]
+                              } for restaurant in restaurants if not restaurant['is_closed'] and float(restaurant['rating']) >= 3.9]
     return removed_unused_fields
 
 def get_keywords(sentence=""):
@@ -279,4 +283,5 @@ def generate_itinerary(city, categories):
 # pprint(y)
 
 # pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
+
 # pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
