@@ -267,7 +267,7 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
-pprint(get_list_of_activities("newyork", categories=["placeholder1", "placeholder"]))
+# pprint(get_list_of_activities("newyork", categories=["placeholder1", "placeholder"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
