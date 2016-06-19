@@ -244,7 +244,7 @@ def generate_itinerary(city, categories):
             'nightlife': nightlife}
 
 
-get_list_of_activities("newyork", categories=["Adventures", "Spa"])
+# get_list_of_activities("newyork", categories=["Adventures", "Spa"])
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
 # x = get_emotions("well this is such an interesting thing, let's talk more about this tomorrow")
