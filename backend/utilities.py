@@ -39,7 +39,7 @@ def get_yelp_search_parameters(lat,longi, mealType):
     params = {}
     params["term"] = mealType
     params["ll"] = "{},{}".format(str(lat),str(longi))
-    params["radius_filter"] = "2000"
+    params["radius_filter"] = "1000"
     params["limit"] = "10"
 
     return params
@@ -72,7 +72,7 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
 
         filtered_by_categories = [act for act in activities if has_one_of_categories(act, categories)]
         filtered_by_duration = [act for act in filtered_by_categories if is_within_duration_bounds(act, min_hours, max_hours)]
-        removed_unused_fields = [{'act_id': int(act['id']),
+        removed_unused_fields = [{'id': act['id'],
                                   'name': act['title'],
                                   'image': act['largeImageURL'],
                                   'latlng': [float(coord) for coord in act['latLng'].split(',')],
@@ -83,6 +83,21 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
         return removed_unused_fields
     except:
         return "null"
+
+def get_list_of_restaurants(lat, lng, meal_type):
+    x = get_yelp_search_parameters(lat, lng, meal_type)
+    restaurants = get_yelp_results(x)['businesses']
+    removed_unused_fields = [{'id': restaurant['id'],
+                              'name': restaurant['name'],
+                              'image': restaurant['image_url'],
+                              'latlng': [restaurant['location']['coordinate']['latitude'],
+                                         restaurant['location']['coordinate']['longitude']],
+                              'url': restaurant['mobile_url'],
+                              'rating_img_url': restaurant['rating_img_url'],
+                              'price': 0,  #TODO: try to get it from yelp website
+                              'type': "activity"
+                              } for restaurant in restaurants if not restaurant['is_closed'] and float(restaurant['rating']) >= 4.0]
+    return removed_unused_fields
 
 def get_keywords(sentence=""):
     api_key = key_fetcher('indico_api_key')
@@ -162,5 +177,4 @@ def get_expedia_compliant_categories_from_moods_list():
 # x = get_keywords("The National Aeronautics and Space Administration (NASA) is an independent agency of the executive branch of the United States Federal Government responsible for the civilian space program as well as aeronautics and aerospace research")
 # pprint(y)
 
-# x = get_yelp_search_parameters(45.5017, -73.5673, 'lunch')
-# pprint(get_yelp_results(x))
+pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
