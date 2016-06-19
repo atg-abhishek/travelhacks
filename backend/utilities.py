@@ -6,7 +6,6 @@ import operator
 import sys
 from weather import *
 import re
-from geopy.geocoders import Nominatim
 
 def key_fetcher(name):
         with open('keys.json') as infile:
