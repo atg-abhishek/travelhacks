@@ -279,13 +279,17 @@ def generate_itinerary(city, moods):
     afternoon_activity = {}
     nightlife = {}
 
+    moods = moods.split(',')
+
     if len(moods) == 0:
         return 'null'
     elif len(moods) == 1:
-        if len(mood_arrs[moods[0]]) < 2:
+        if len(mood_arrs[moods[0]]) < 3:
             return 'null'
         morning_activity, afternoon_activity, nightlife = random.sample(mood_arrs[moods[0]], 3)
     elif len(moods) >= 2:
+        pprint("moods 0 is " + moods[0] + " and " + moods[1])
+        pprint(" mood arrs list is " + mood_arrs[moods[0]])
         morning_activity = random.choice(mood_arrs[moods[0]])
         afternoon_activity = random.choice(mood_arrs[moods[1]])
         nightlife = random.choice(mood_arrs[moods[1]])
