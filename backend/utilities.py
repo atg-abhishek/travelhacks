@@ -122,7 +122,7 @@ def get_list_of_activities(city, categories, min_hours=2, max_hours=6):  #TODO: 
                                         'price': act['fromPrice'],
                                         'type': "activity",
                                         'keywords': keywords,
-                                        'moods' : mood_keywords_mapper(act,keywords)
+                                        'moods': mood_keywords_mapper(act,keywords)
                                         }
                     final_activities.append(cleaned_activity)
 
@@ -258,8 +258,8 @@ def get_indoor_outdoor_temp_weather(query_type,lat=45.5268224, lng=-73.5799845):
 
 
 # pprint(get_city_from_lat_lng())
-def generate_itinerary(city, categories):
-    activities = get_list_of_activities(city, categories)
+def generate_itinerary(city, moods):
+    activities = get_list_of_activities(city, ["", ""])
     if len(activities) < 3:
         return "null"
 
@@ -276,8 +276,32 @@ def generate_itinerary(city, categories):
             'dinner_restaurant': dinner_restaurant,
             'nightlife': nightlife}
 
+def generate_mood_indexed_files():
+    cities = ['montreal', 'sanfrancisco', 'chicago', 'boston', 'tokyo', 'paris', 'delhi', 'beijing', 'berlin', 'london', 'losangeles', 'bangkok', 'taipei','saopaolo', 'buenosaires','capetown']
+    # cities = ['newyork']
+    for city in cities:
+        pprint("Running for " + city)
+        temp = {}
+        with open('./datafiles/' + city + '_activities.json') as infile:
+            temp = json.load(infile)
+        activities = temp['data']
 
-def mood_keywords_mapper(act,keywords):
+        moods = {"adventurous": [],
+                 "relaxed": [],
+                 "comical": [],
+                 "nerdy": [],
+                 "romantic": [],
+                 "artsy": []}
+
+        for act in activities:
+            for mood in act['moods']:  # Assuming only relevant moods here
+                moods[mood['mood']].append(act)
+
+        with open('./datafiles/' + city + '_moods.json', 'w') as outfile:
+            json.dump({"data": moods}, outfile)
+
+
+def mood_keywords_mapper(act, keywords):
     moodlist = ["relaxed", "comical", "adventurous", "artsy", "romantic", "nerdy"]
     mood_scores = []
     for m in moodlist:
@@ -331,3 +355,5 @@ def mood_keywords_mapper(act,keywords):
 # for t in temp:
 #     pprint("Running for " + t)
 #     get_list_of_activities(t, categories=["placeholder1", "placeholder"])
+
+# generate_mood_indexed_files()
