@@ -15,7 +15,7 @@ def cityInfo():
 	lat = request.form['lat']
 	lng = request.form['lng']
 
-	return "You sent in " + cityName + " ," + str(lat) + " ," + str(lng)
+	return "You sent in " + " ," + str(lat) + " ," + str(lng)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=23001, debug=True)
