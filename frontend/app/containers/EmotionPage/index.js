@@ -8,6 +8,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import selectEmotionPage from './selectors';
 import selectEmotions from './selectors';
+import { push } from 'react-router-redux';
 import { selectCityData } from '../App/selectors';
 
 import { loadMoodData } from '../App/actions';
@@ -32,12 +33,12 @@ export class EmotionPage extends React.Component { // eslint-disable-line react/
     const emotionBtns = emotions.map((emotion) => {
       let emotionBtn = (
         <EmotionButton onClick={() => { this.props.onToggleEmotion(emotion.id); }} key={emotion.id}>{emotion.name}</EmotionButton>
-      )
+      );
       if (emotion.toggled) {
         emotionBtn = (
           <EmotionButton selected onClick={() => { this.props.onToggleEmotion(emotion.id); }} key={emotion.id}>{emotion.name}</EmotionButton>
         );
-    }
+      }
       return emotionBtn;
     });
 
@@ -78,6 +79,9 @@ function mapDispatchToProps(dispatch) {
     onSubmitForm: (evt, emotions) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadMoodData(emotions));
+      setTimeout(() => {
+        dispatch(push('map'));
+      }, 1000);
     },
     onToggleEmotion: (emotion) => dispatch(selectEmotion(emotion)),
     // onClickButton: (emotionBtn) => dispatch(selectEmotion(emotionBtn)),

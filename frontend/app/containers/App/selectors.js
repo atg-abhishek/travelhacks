@@ -17,6 +17,11 @@ const selectCityData = () => createSelector(
   (globalState) => globalState.get('cityData').toJS()
 );
 
+const selectMoodData = () => createSelector(
+  selectGlobal(),
+  (globalState) => globalState.get('moodData').toJS()
+);
+
 const selectLoading = () => createSelector(
   selectGlobal(),
   (globalState) => globalState.get('loading')
@@ -52,6 +57,7 @@ export {
   selectGlobal,
   selectCurrentUser,
   selectCityData,
+  selectMoodData,
   selectLoading,
   selectError,
   selectRepos,

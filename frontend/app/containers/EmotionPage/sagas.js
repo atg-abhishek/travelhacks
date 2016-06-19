@@ -30,6 +30,7 @@ export function* getMoodData() {
 
   const formData = new FormData();
   const emotionsWanted = [];
+  console.log('here in sagas');
   emotions.map((emotion) => {
     if (emotion.toggled) {
       return emotionsWanted.push(emotion.name);
@@ -76,6 +77,7 @@ export function* moodData() {
 
   // Suspend execution until location changes
   yield take(LOCATION_CHANGE);
+  console.log('after this');
   // yield cancel(watcher);
 }
 

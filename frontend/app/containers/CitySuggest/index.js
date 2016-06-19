@@ -34,7 +34,7 @@ export class RepoListItem extends React.Component { // eslint-disable-line react
         <Geosuggest
           className={styles.geosuggest}
           placeholder="Type a city"
-          initialValue="Montreal"
+          initialValue="New York"
           onSuggestSelect={this.onSuggestSelect}
           location={new google.maps.LatLng(53.558572, 9.9278215)}  // eslint-disable-line
           radius="20"
@@ -56,7 +56,6 @@ RepoListItem.propTypes = {
   // item: React.PropTypes.object,
   onChangeCity: React.PropTypes.func,
   cityName: React.PropTypes.string,
-
   // currentUser: React.PropTypes.string,
 };
 

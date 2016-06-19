@@ -27,7 +27,6 @@ import { loadCityData } from '../App/actions';
 
 import RepoListItem from 'containers/RepoListItem';
 import CitySuggest from 'containers/CitySuggest';
-import SimpleMap from 'containers/SimpleMap';
 
 import Button from 'components/Button';
 import H1 from 'components/H1';

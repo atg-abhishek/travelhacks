@@ -56,7 +56,7 @@ function appReducer(state = initialState, action) {
         .setIn(['moodData', 'initialData'], false);
     case LOAD_MOOD_DATA_SUCCESS:
       return state
-        .setIn(['moodData', 'initialData'], action.data)
+        .setIn(['moodData', 'initialData'], action.moodData)
         .set('loading', false);
         // .set('currentUser', action.username);
     case LOAD_MOOD_DATA_ERROR:

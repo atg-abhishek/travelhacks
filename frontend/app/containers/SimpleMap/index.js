@@ -7,7 +7,7 @@ import GoogleMap from 'google-map-react';
 export default class SimpleMapPage extends Component {
   static defaultProps = {
     center: {lat: 59.938043, lng: 30.337157},
-    zoom: 9,
+    zoom: 11,
     greatPlaceCoords: {lat: 59.724465, lng: 30.080121}
   };
 
@@ -18,10 +18,11 @@ export default class SimpleMapPage extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
         <GoogleMap
-          center={{ lat: 59.938043, lng: 30.337157 }}
-          zoom={9}
+          center={{ lat: this.props.lat, lng: this.props.lng }}
+          zoom={14}
         />
     );
   }
