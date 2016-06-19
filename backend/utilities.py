@@ -6,6 +6,7 @@ import operator
 import sys
 from weather import *
 import re
+import random
 
 def key_fetcher(name):
         with open('keys.json') as infile:
@@ -34,7 +35,7 @@ def get_yelp_results(params):
 
     return data
 
-def get_yelp_search_parameters(lat,longi, mealType):
+def get_yelp_search_parameters(lat, longi, mealType):
     #See the Yelp API for more details
     params = {}
     params["term"] = mealType
@@ -198,6 +199,24 @@ def get_weather(lat=45.5268224, lng=-73.5799845):
     return {'temp' : temp, 'type_of_activities' : wdecstr}
 
 # pprint(get_city_from_lat_lng())
+def generate_itinerary(city, categories):
+    activities = get_list_of_activities(city, categories)
+    if len(activities) < 3:
+        return "null"
+
+    # day_activities = <NO NIGHTLIFE NO MEALS>
+    # night_activities = <NIGHTLIFE NO MEALS>
+    morning_activity, afternoon_activity, nightlife = random.sample(activities, 3)
+    breakfast_restaurant = random.choice(get_list_of_restaurants(morning_activity['latlng'][0], morning_activity['latlng'][1], 'breakfast'))
+    lunch_restaurant = random.choice(get_list_of_restaurants(afternoon_activity['latlng'][0], afternoon_activity['latlng'][1], 'lunch'))
+    dinner_restaurant = random.choice(get_list_of_restaurants(nightlife['latlng'][0], nightlife['latlng'][1], 'dinner'))
+    return {'breakfast_restaurant': breakfast_restaurant,
+            'morning_activity': morning_activity,
+            'lunch_restaurant': lunch_restaurant,
+            'afternoon_activity': afternoon_activity,
+            'dinner_restaurant': dinner_restaurant,
+            'nightlife': nightlife}
+
 # pprint(get_list_of_activities("newyork", categories=["Adventures", "Spa"]))
 
 #google_places(-33.8670,151.1957, 500, 'food', 'cruise' )
@@ -210,3 +229,5 @@ def get_weather(lat=45.5268224, lng=-73.5799845):
 # pprint(y)
 
 # pprint(get_list_of_restaurants(45.5017, -73.5673, 'lunch'))
+
+pprint(generate_itinerary("newyork", categories=["Adventures", "Spa", "Attractions"]))
