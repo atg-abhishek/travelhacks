@@ -3,7 +3,7 @@
  */
 
 import { take, call, put, select, fork, cancel } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { LOCATION_CHANGE, push } from 'react-router-redux';
 import { LOAD_MOOD_DATA } from 'containers/App/constants';
 import { moodDataLoaded, moodDataLoadingError } from 'containers/App/actions';
 
@@ -38,7 +38,7 @@ export function* getMoodData() {
 
   console.log(emotionsWanted);
 
-  formData.append('city', cityData.initialData.name || 'montreal');
+  formData.append('city', cityData.initialData.city);
   formData.append('selected_moods', emotionsWanted);
   formData.append('current_time', new Date().getTime());
 
@@ -76,7 +76,7 @@ export function* moodData() {
 
   // Suspend execution until location changes
   yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  // yield cancel(watcher);
 }
 
 // Bootstrap sagas

@@ -8,6 +8,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import selectEmotionPage from './selectors';
 import selectEmotions from './selectors';
+import { selectCityData } from '../App/selectors';
+
 import { loadMoodData } from '../App/actions';
 
 import { createStructuredSelector } from 'reselect';
@@ -19,6 +21,11 @@ import styles from './styles.css';
 import newYorkImg from './city_newyork.jpg';
 
 export class EmotionPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentDidMount() {
+    // if (!this.props.cityData.initialData) {
+    //   // this.props.dispatch(push('emotions'));
+    // }
+  }
   render() {
     const emotions = this.props.emotions.emotions;
 
@@ -62,6 +69,7 @@ EmotionPage.propTypes = {
 const mapStateToProps = createStructuredSelector({
   selectEmotionPage: selectEmotionPage(),
   emotions: selectEmotions(),
+  cityData: selectCityData(),
 });
 
 function mapDispatchToProps(dispatch) {

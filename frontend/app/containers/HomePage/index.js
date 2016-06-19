@@ -137,10 +137,7 @@ function mapDispatchToProps(dispatch) {
       if (city && city.label) {
         dispatch(loadCityData());
         // todo fix this
-        setTimeout(() => {
-          console.log('timeout expired');
-          dispatch(push('emotions'));
-        }, 1200);
+        dispatch(push('emotions'));
       }
     },
     dispatch,

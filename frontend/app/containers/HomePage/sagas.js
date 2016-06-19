@@ -56,7 +56,8 @@ export function* cityData() {
 
   // Suspend execution until location changes
   yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  console.log('here');
+  // yield cancel(watcher);
 }
 
 // Bootstrap sagas
