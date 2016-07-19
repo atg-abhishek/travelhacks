@@ -1,5 +1,8 @@
 backend/keys.json
 .idea
+instaurant.pem
+backend/TravelHacks.txt
+backend/__pycache__
 
 # Front end stuff
 # Don't check auto-generated stuff into git
